@@ -24,7 +24,6 @@ private slots:
 
     void on_pushButton_4_clicked();
 
-    void on_minimumAreaEnclosingBox_clicked();
 
 private:
     Ui::Widget *ui;

@@ -37,6 +37,23 @@ void Widget::on_pushButton_clicked()
         else
             ch = alg.graham(points);
 
+        if (ui->checkBox->isChecked())
+        {
+            QPolygon b = alg.strictlyConvexHull(ch);
+            std::vector<QPoint> strictpoints;
+
+            // Points in strict Convex Hull
+            for (int i = 0; i < b.size(); i++)
+            {
+                strictpoints.push_back(b[i]);
+            }
+
+            ui->Canvas->setCH(b);
+            ui->Canvas->setStrictPoints(strictpoints);
+            ui->label_2->setText(QString::number(timer.elapsed()) + " ms");
+            repaint();
+        }
+        else
         //Draw
         ui->label_2->setText(QString::number(timer.elapsed()) + " ms");
         ui->Canvas->setCH(ch);
@@ -55,6 +72,8 @@ void Widget::on_pushButton_3_clicked()
 {
     ui->Canvas->clearCH();
     ui->Canvas->clearPoints();
+    ui->Canvas->clearStrictPoints();
+
 }
 
 void Widget::on_pushButton_4_clicked()
@@ -80,9 +99,4 @@ void Widget::on_pushButton_4_clicked()
     ui->Canvas->setPoints(poly);
     ui->Canvas->clearCH();
     ui->Canvas->repaint();
-}
-
-void Widget::on_minimumAreaEnclosingBox_clicked()
-{
-
 }

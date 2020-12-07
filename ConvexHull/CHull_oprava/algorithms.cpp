@@ -10,6 +10,10 @@
 #include <QtGui>
 #include <iostream>
 #include <cmath>
+#include "widget.h"
+#include "ui_widget.h"
+#include "algorithms.h"
+#include "draw.h"
 
 Algorithms::Algorithms()
 {
@@ -145,14 +149,13 @@ QPolygon Algorithms::jarvis(std::vector<QPoint> &points)
 
     } while (!(pj == q));
 
-    ch = strictlyConvexHull(ch);
+    //ch = strictlyConvexHull(ch);
     return ch;
 }
 QPolygon Algorithms::graham(std::vector<QPoint> &points)
 {
     //
     std::deque<QPoint> ch;
-
     //find pivot q
     QPoint  q = *min_element(points.begin(), points.end(), sortByY());
     //Sort points by their dirrections
@@ -190,7 +193,7 @@ QPolygon Algorithms::graham(std::vector<QPoint> &points)
     QVector<QPoint> ch2 (ch.begin(),ch.end());
     QPolygon ch3(ch2);
 
-    ch3 = strictlyConvexHull(ch3);
+    //ch3 = strictlyConvexHull(ch3);
     return ch3;
 
 
@@ -313,7 +316,7 @@ QPolygon Algorithms::sweepLine(std::vector<QPoint> &points)
         //Find its successor
         index = n[index];
     }
-    ch = strictlyConvexHull(ch);
+    //ch = strictlyConvexHull(ch);
 
     return ch;
 }

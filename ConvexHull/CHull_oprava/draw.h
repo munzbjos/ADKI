@@ -12,6 +12,7 @@ class Draw : public QWidget
 private:
     QPolygon ch;
     std::vector <QPoint> points;
+        std::vector<QPoint> strict_points;
 
 public:
     explicit Draw(QWidget *parent = nullptr);
@@ -23,6 +24,8 @@ public:
     void clearCH(){ch.clear(); repaint();}
     void setCH(QPolygon &ch_){ ch = ch_;}
     void clearPoints(){points.clear(); repaint();}
+    void clearStrictPoints(){strict_points.clear(); repaint();}
+    void setStrictPoints(std::vector<QPoint> &pts) {strict_points = pts;}
     std::vector <QPoint> generatePoints(int n,int height,int width);
     std::vector <QPoint> generateGrid(int n, int height, int width);
     std::vector <QPoint> generateCircle(int n, int height, int width);

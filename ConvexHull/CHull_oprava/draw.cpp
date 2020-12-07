@@ -39,7 +39,16 @@ void Draw::paintEvent(QPaintEvent *e)
         qp.drawEllipse(points[i].x()-r,points[i].y()-r, 2*r, 2*r);
     }
 
-    //draw polygon
+    //Draw points in the Convex Hull
+    int r2 = 4;
+    for (unsigned int i = 0; i < strict_points.size();i++)
+    {
+        qp.setPen(Qt::blue);
+        qp.drawEllipse(strict_points[i].x()-r2,strict_points[i].y()-r2,2*r2,2*r2);
+    }
+
+    //Draw polygons
+    qp.setPen(Qt::red);
     qp.drawPolygon(ch);
 
     qp.end();
@@ -78,8 +87,8 @@ std::vector <QPoint> Draw::generateGrid(int n, int height, int width)
         return points;
     }
     QPoint q;
-    q.setX(1);
-    q.setY(1);
+    q.setX(4);
+    q.setY(4);
 
     n = ceil(sqrt(n));
 
@@ -90,7 +99,7 @@ std::vector <QPoint> Draw::generateGrid(int n, int height, int width)
             q.setX((q.x()) + (height)/n);
             points.push_back(q);
         }
-        q.setX(1);
+        q.setX(4);
         q.setY((q.y()) + (height)/n);
     }
 
@@ -105,7 +114,7 @@ std::vector<QPoint> Draw::generateCircle(int n, int height, int width)
     QPoint p;
     QPoint center(width/2,height/2);
     //QPoint center(450,500);
-    double radius = log10(n)*50;//n/3000;
+    double radius = n/3000;
     double fi = (2*M_PI)/n;
 
     for(int i = 0;i<n;i++)
