@@ -13,7 +13,7 @@ void Draw::paintEvent(QPaintEvent *event)
     //Draw points
     for (unsigned int i = 0; i < points.size(); i++)
     {
-        painter.drawEllipse(points[i].x() - 5, points[i].y() - 5, 10, 10);
+        painter.drawEllipse(points[i].x() - 1, points[i].y() - 1, 2, 2);
     }
 
     //Draw edges
@@ -158,31 +158,29 @@ void Draw::mousePressEvent(QMouseEvent *event)
 
     void Draw::loadFile(std::string &path, std::vector<QPoint3D> &points,  QSizeF &canvas_size, double &min_z, double &max_z)
     {
+
         double x, y, z;
         QPoint3D p;
 
-        // Dataset limits
-        min_z = std::numeric_limits<double>::max();
-        max_z = std::numeric_limits<double>::min();
+        //Find minimum and maximum x,y,z
         double min_x = std::numeric_limits<double>::max();
         double min_y = std::numeric_limits<double>::max();
-        double max_x = -(std::numeric_limits<double>::max());
+        double max_x = std::numeric_limits<double>::min();
         double max_y = std::numeric_limits<double>::min();
+        min_z = std::numeric_limits<double>::max();
+        max_z = std::numeric_limits<double>::min();
 
         std::ifstream myfile(path);
-
         if(myfile.is_open())
         {
-            while(myfile >> x >> y >> z)
+            while(myfile >> x >> y >> z)        //read file line by line
             {
-                x = x*(-1);
                 p.setX(x);
                 p.setY(y);
                 p.setZ(z);
 
                 points.push_back(p);
 
-                // Limits update
                 if(x < min_x) min_x = x;
                 if(x > max_x) max_x = x;
                 if(y < min_y) min_y = y;
@@ -191,26 +189,21 @@ void Draw::mousePressEvent(QMouseEvent *event)
                 if(z > max_z) max_z = z;
             }
 
-
             myfile.close();
         }
 
-        double h = canvas_size.height();
-        double w = canvas_size.width();
-        //Rescaling points to the canvas size
-        double coef;
-        if (fabs(max_x-min_x) > max_y-min_y) {
-                coef = (w-10)/(fabs(max_x-min_x));
-        }
-        else {
-                coef = (h-10)/(max_y-min_y);
-        }
+        //Scale points to canvas size
+            double h = canvas_size.height() - 50;
+            double w = canvas_size.width() - 50;
 
-        for(unsigned int i = 0; i < points.size(); i++)
-        {
-            points[i].setX(((points[i].x()-min_x)*coef)+5);
-            points[i].setY(((points[i].y()-min_y)*coef)+5);
-        }
+            double x_coef = w/(max_x-min_x);
+            double y_coef = h/(max_y-min_y);
+
+            for(unsigned int i = 0; i < points.size(); i++)
+            {
+                points[i].setX((points[i].x()-min_x)*x_coef);
+                points[i].setY((points[i].y()-min_y)*y_coef);
+            }
     }
     /*
     points.clear();
